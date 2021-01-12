@@ -1,0 +1,87 @@
+#header, #header:link, #header:hover, #header:active, #header:visited {
+    border: 4px solid #196ee6 !important;
+    color: #196ee6;
+    text-decoration: none;
+}
+
+#primary-color {
+    background-color: #098dff;
+}
+
+#button-secondary-color {
+    background-color: #ff7b09;
+    color: white;
+}
+
+#primary-color-text {
+    color: #196ee6;
+}
+
+#secondary-color-text {
+    color: #E69119;
+}
+
+#primary-color-button {
+    background-color: #196ee6;
+    color: white;
+}
+
+#secondary-color-button {
+    background-color: #E69119;
+    color: white;
+}
+
+#primary-color-doc-navbar:link {
+    color: #196ee6;
+}
+
+#documentation-navbar-method {
+    font-size: 13px;
+}
+
+#GET {
+    background-color: #3bc477;
+    color: white;
+}
+
+#POST {
+    background-color: #efc810;
+    color: white;
+}
+
+#PATCH {
+    background-color: #0e31f1;
+    color: white;
+}
+
+#PUT {
+    background-color: #7b8084;
+    color: white;
+}
+
+#DELETE {
+    background-color: #eb3014;
+    color: white;
+}
+
+#code-font {
+    font-family: "Courier New", monospace;
+    font-size: 16px;
+}
+
+#request-parameter-table {
+    font-size: 16px;
+}
+
+#success-status {
+    color: #51b44b;
+}
+
+#failure-status {
+    color: #dc3723;
+}
+
+#response-body-font {
+    font-family: "Courier New", monospace;
+    font-size: 14px; 
+}

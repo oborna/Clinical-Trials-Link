@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center py-4">
+    <div class="col-4"></div>
+    <div class="col-4 text-center py-3">
+        <h3 class="pb-2">{{header}}</h3>
+        <div class="bg-white border py-4">
+            {{message}} <br />
+            Please save your JSON Web Token for future use.
+            <div class="table-responsive text-left px-5 mx-1 mt-4">
+                <table class="table table-sm text-left">
+                    <tbody>
+                    <tr>
+                        <th scope="row">User ID</th>
+                        <td><input class="form-control" type="text" value="{{user_id}}" readonly></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">First Name</th>
+                        <td><input class="form-control" type="text" value="{{first_name}}" readonly></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Last Name</th>
+                        <td><input class="form-control" type="text" value="{{last_name}}" readonly></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Email</th>
+                        <td><input class="form-control" type="text" value="{{email}}" readonly></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">JSON Web Token</th>
+                        <td>
+                            <input class="form-control" type="text" class="pl-2 mb-2" value="{{jwt}}" id="JWT">
+                            <button type="button" class="btn btn-default btn-sm mt-2 mb-0" onclick="copyJWT()">Copy</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <a href="/" class="btn btn-primary btn-lg mt-5 mb-0" role="button">Home</a>
+    </div>
+    <div class="col-4"></div>
+</div>
+
+<!-- Resource: https://www.w3schools.com/howto/howto_js_copy_clipboard.asp -->
+<script>
+    function copyJWT() {
+        /* Get the text field */
+        var copyText = document.getElementById("JWT");
+
+        /* Select the text field */
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+
+        /* Alert the copied text */
+        alert("JWT Copied");
+        } 
+</script>
+
+{% endblock content %}

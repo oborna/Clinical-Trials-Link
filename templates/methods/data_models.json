@@ -1,0 +1,118 @@
+{
+    "trials": [
+        {
+            "name": "name",
+            "type": "string",
+            "required": "no",
+            "in": "body",
+            "description": "The clinical trial's name."
+        },
+        {
+            "name": "title",
+            "type": "string",
+            "required": "yes",
+            "in": "body",
+            "description": "The clinical trial's official title on clinicaltrials.gov. Must be unique."
+        },
+        {
+            "name": "nct_number",
+            "type": "string",
+            "required": "yes",
+            "in": "body",
+            "description": "The clinical trial's National Clinical Trial (NCT) Number on clinicaltrials.gov. Include the 'NCT' prefix. Must be unique."
+        },
+        {
+            "name": "ct_gov_url",
+            "type": "string",
+            "required": "yes",
+            "in": "body",
+            "description": ""
+        },
+        {
+            "name": "phase",
+            "type": "string",
+            "required": "yes",
+            "in": "body",
+            "description": "The clinical trial's phase. Must be one of the following: 'Phase 1,' 'Phase 2', 'Phase 3', 'Phase 4', 'Not Applicable', or 'Other'."
+        },
+        {
+            "name": "status",
+            "type": "string",
+            "required": "yes",
+            "in": "body",
+            "description": "The clinical trial's current status. Must be one of the following: 'Recruiting', 'Not yet recruiting', 'Active, not recruiting', 'Completed', 'Terminated', 'Suspended', 'Withdrawn', or 'Other'."
+        },
+        {
+            "name": "condition",
+            "type": "string",
+            "required": "yes",
+            "in": "body",
+            "description": "The condition that the clinical trial addresses. Must be a condition that is currently in the API's database."
+        },
+        {
+            "name": "study_type",
+            "type": "string",
+            "required": "yes",
+            "in": "body",
+            "description": "The clinical trial's study type (i.e., interventional, observational). Must be one of the following: 'Interventional', 'Observational', or 'Other'."
+        },
+        {
+            "name": "intervention_name",
+            "type": "string",
+            "required": "yes",
+            "in": "body",
+            "description": "The name of the intervention being tested."
+        },
+        {
+            "name": "intervention_type",
+            "type": "string",
+            "required": "yes",
+            "in": "body",
+            "description": "The type of intervention being tested (i.e., drug, diagnostic test). Must be one of the following: 'Drug', 'Biological', 'Behavioral', 'Procedure', 'Device', 'Dietary Supplement', or 'Other'."
+        },
+        {
+            "name": "sponsors",
+            "type": "list of strings",
+            "required": "yes",
+            "in": "body",
+            "description": "Any company or organization running the clinical trial."
+        },
+        {
+            "name": "summary",
+            "type": "string",
+            "required": "no",
+            "in": "body",
+            "description": "A brief summary of the clinical trial."
+        },
+        {
+            "name": "website",
+            "type": "string",
+            "required": "no",
+            "in": "body",
+            "description": "The clinical trial's independent website."
+        }  
+    ],
+    "conditions": [
+        {
+            "name": "name",
+            "type": "string",
+            "required": "yes",
+            "in": "body",
+            "description": "The condition's name. Must be unique."
+        },
+        {
+            "name": "description",
+            "type": "string",
+            "required": "no",
+            "in": "body",
+            "description": "A brief description of the condition."
+        },
+        {
+            "name": "types",
+            "type": "list of strings",
+            "required": "no",
+            "in": "body",
+            "description": "Any condition types associated with the condition."
+        }  
+    ]
+}

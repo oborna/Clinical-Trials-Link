@@ -1,0 +1,942 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row text-secondary border-top">
+    
+    <!-- Documentation Navigation Side Panel-->
+    <div class="col-2 ml-0 pl-0">
+      <div class="nav flex-column nav-pills bg-light border-right ml-0 pl-0" role="tablist" aria-orientation="vertical">
+        <!-- General Documentation-->
+        <a class="nav-link active" data-toggle="pill" href="#getting-started" role="tab" aria-controls="getting-started-tab" aria-selected="true">Getting Started</a>
+        <a class="nav-link" data-toggle="pill" href="#resource-data-models" role="tab" aria-controls="resource-data-models-tab" aria-selected="true">Resource Data Models</a>
+        
+        <!-- Clinical Trial Methods -->
+        <span class="font-weight-bold mt-1 mb-1 ml-3">Clinical Trial Endpoints</span>
+        <a class="nav-link" data-toggle="pill" href="#get-trials" role="tab" aria-controls="get-trials-tab" aria-selected="false"><span class="badge ml-3" id="GET">GET</span><span> /trials</span></a>
+        <a class="nav-link" data-toggle="pill" href="#get-trial" role="tab" aria-controls="get-trial-tab" aria-selected="false"><span class="badge ml-3" id="GET">GET</span><span> /trials/{trial_id}<span></a>
+        <a class="nav-link" data-toggle="pill" href="#post-trial" role="tab" aria-controls="post-trial-tab" aria-selected="false"><span class="badge ml-3" id="POST">POST</span><span> /trials</span></a>
+        <a class="nav-link" data-toggle="pill" href="#patch-trial" role="tab" aria-controls="patch-trial-tab" aria-selected="false"><span class="badge ml-3" id="PATCH">PATCH</span><span> /trials/{trial_id}</span></a>
+        <a class="nav-link" data-toggle="pill" href="#delete-trial" role="tab" aria-controls="delete-trial-tab" aria-selected="false"><span class="badge ml-3" id="DELETE">DELETE</span><span> /trials/{trial_id}</span></a>        
+
+        <!-- Condition Methods -->
+        <span class="font-weight-bold mt-1 mb-1 ml-3">Condition Endpoints</span>
+        <a class="nav-link" data-toggle="pill" href="#get-conditions" role="tab" aria-controls="get-conditions-tab" aria-selected="false"><span class="badge ml-3" id="GET">GET</span> /conditions</a>
+        <a class="nav-link" data-toggle="pill" href="#get-condition" role="tab" aria-controls="get-condition-tab" aria-selected="false"><span class="badge ml-3" id="GET">GET</span> /conditions/{condition_id}</a>
+        <!--<a class="nav-link" data-toggle="pill" href="#get-condition-trials" role="tab" aria-controls="get-condition-trials-tab" aria-selected="false"><span class="badge ml-3" id="GET">GET</span> /conditions/{condition_id}/trials</a>-->  
+        <a class="nav-link" data-toggle="pill" href="#post-condition" role="tab" aria-controls="post-condition-tab" aria-selected="false"><span class="badge ml-3" id="POST">POST</span> /conditions</a>
+        <a class="nav-link" data-toggle="pill" href="#patch-condition" role="tab" aria-controls="patch-condition-tab" aria-selected="false"><span class="badge ml-3" id="PATCH">PATCH</span> /conditions/{condition_id}</a>
+        <a class="nav-link" data-toggle="pill" href="#delete-condition" role="tab" aria-controls="delete-condition-tab" aria-selected="false"><span class="badge ml-3" id="DELETE">DELETE</span> /conditions/{condition_id}</a>
+        <a class="nav-link" data-toggle="pill" href="#put-condition-trial" role="tab" aria-controls="put-condition-trial-tab" aria-selected="false"><span class="badge ml-3" id="PUT">PUT</span><span id="documentation-navbar-method">  /conditions/{condition_id}/trials/{trial_id}<span></span></a>
+
+      </div>
+    </div>
+
+    <div class="col-2"></div>
+    
+    <!-- Documentation Content -->
+    <div class="col-6">
+      <div class="tab-content pt-4" id="v-pills-tabContent">
+
+        <!-- GENERAL DOCUMENTATION -->
+
+        <!-- Getting Started -->
+        <div class="tab-pane show active" id="getting-started" role="tabpanel" aria-labelledby="getting-started-tab">
+          <h3 id="primary-color-text">Getting started</h3>
+          <!-- Authentication-->
+          <h5 class="text-dark font-weight-bold pt-3">Authentication</h5>
+          <span>
+            Using this API requires a user account and a temporary access token. 
+            <a href="/auth/oauth2"><strong>Sign in with Google</strong></a> to create or look up your user account and get a temporary access token.
+            Be sure to include your temporary access token in the <span class="badge badge-light text-secondary py-1 px-1">Authorization</span> header of your request.
+          </span>
+          <!-- Media Types -->
+          <h5 class="text-dark font-weight-bold pt-3">Media Types</h5>
+          <span>
+            This API accepts and returns only <strong>JSON</strong> in the request and response bodies. 
+            When making a request with contents in the response body, we strongly encourage you to explicitly include "application/json" in the <span class="badge badge-light text-secondary py-1 px-1">Accept</span> header of your request.
+            When sending a request with contents in the request body, include "application/json" in the <span class="badge badge-light text-secondary py-1 px-1">Content-Type</span> header of your request as well.
+          </span>         
+          <!-- Contributors -->
+          <h5 class="text-dark font-weight-bold pt-3">Contributors</h5>
+          <span>
+            By default, users are <strong>not</strong> set as contributors. 
+            A <span class="font-weight-bold" id="secondary-color-text">contributor</span> is someone who can add, edit, and delete resources.
+            This documentation covers some methods that are exclusive to users with contributor capabilities.
+            These methods are provided in the public documentation for the sole purpose of demonstrating the full functionality of this REST API.
+          </span>
+        </div>
+
+        <!-- Resource Data Models -->
+        <div class="tab-pane fade" id="resource-data-models" role="tabpanel" aria-labelledby="resource-data-models-tab">
+          <h3 id="primary-color-text">Resource data models</h3>
+          <!-- Clinical Trials-->
+          <h5 class="text-dark font-weight-bold pt-3">Clinical Trials</h5>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Required?</th>
+                <th scope="col">In</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for property in data_models.trials %}
+              <tr>
+                <th scope="row">{{property.name}}</th>
+                <td>{{property.type}}</td>
+                <td>{{property.required}}</td>
+                <td>{{property.in}}</td>
+                <td>{{property.description}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>    
+          <!-- Conditions -->
+          <h5 class="text-dark font-weight-bold pt-3">Conditions</h5>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Required?</th>
+                <th scope="col">In</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for property in data_models.conditions %}
+              <tr>
+                <th scope="row">{{property.name}}</th>
+                <td>{{property.type}}</td>
+                <td>{{property.required}}</td>
+                <td>{{property.in}}</td>
+                <td>{{property.description}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>        
+        </div>
+
+        <!-- CLINICAL TRIALS -->
+
+        <!-- Method: -->
+        <!-- GET /trials -->
+        <div class="tab-pane fade" id="get-trials" role="tabpanel" aria-labelledby="get-trials-tab">
+          <h3 id="primary-color-text">{{ trial_methods.get_trials.title }}</h3>
+          <p>{{ trial_methods.get_trials.description }}{% if trial_methods.get_trials.contributor_only is true %}<span class="ml-3 font-weight-bold" id="secondary-color-text">*contributors only</span>{% endif %}</p>
+          <h4 class="bg-light rounded pt-1 pb-2 px-2"><span class="badge mr-3" id="GET">{{ trial_methods.get_trials.method }}</span><span id="code-font">{{ trial_methods.get_trials.endpoint }}</span></h4>
+
+          <!-- Request Parameters: Table or None -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Request Parameters</h5>
+          {% if trial_methods.get_trials.path_parameters is eq([]) and trial_methods.get_trials.request_parameters is eq([]) %}
+            <span class="pl-1">None</span>
+          {% else %}
+          <table class="table table-sm" id="request-parameter-table">
+            <thead>
+              <tr class="d-flex">
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-2">Type</th>
+                <th scope="col" class="col-2">Required</th>
+                <th scope="col" class="col-2">In</th>
+                <th scope="col" class="col-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for parameter in trial_methods.get_trials.path_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+              {% for parameter in trial_methods.get_trials.request_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+          
+          <!-- Response Examples -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Response Examples</h5>
+          <div class="bg-light border-top border-left border-right rounded-top py-2 px-2 font-weight-bold">Status: <span id="success-status">{{ trial_methods.get_trials.status_code }}</span></div>
+          <div class="bg-white border-top border-left border-right border-bottom rounded-bottom pt-2 pb-0 px-2 mb-3 text-dark" id="response-body-font">
+            <pre id="response-body-font">
+            <code id="response-body-font">
+              {
+                "id": 5679095853613056,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/trials/5679095853613056",
+                "name": "GENERATION HD1",
+                "phase": "Phase 3",
+                "status": "Active, not recruiting",
+                "condition": {
+                    "id": 5668756323827712,
+                    "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5668756323827712"
+                },
+                "study_type": "Interventional",
+                "intervention_type": "Drug",
+                "intervention_name": "RG6042",
+                "companies": [
+                    "Hoffmann-La Roche"
+                ],
+                "summary": "This study will evaluate the efficacy, safety, and biomarker effects of RO7234292 (RG6042) compared with placebo in patients with manifest Huntington's disease (HD).",
+                "website": ""
+            },
+            {
+                "id": 6203775702269952,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/trials/6203775702269952",
+                "name": "PROOF",
+                "phase": "Phase 2",
+                "status": "Active, not recruiting",
+                "condition": {
+                    "id": 5668756323827712,
+                    "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5668756323827712"
+                },
+                "study_type": "Interventional",
+                "intervention_type": "Drug",
+                "intervention_name": "pridopidine",
+                "companies": [
+                    "Prilenia"
+                ],
+                "summary": "This study will evaluate the efficacy and safety of pridopidine 45mg twice daily (BID) in patients with early stage manifest Huntington Disease (HD).",
+                "website": ""
+            }
+            </code>
+            </pre>                       
+          </div>
+        </div>
+        
+        <!-- Method: -->
+        <!-- GET /trials/trial_id -->
+        <div class="tab-pane fade" id="get-trial" role="tabpanel" aria-labelledby="get-trial-tab">
+          <h3 id="primary-color-text">{{ trial_methods.get_trial.title }}</h3>
+          <p>{{ trial_methods.get_trial.description }}{% if trial_methods.get_trial.contributor_only is true %}<span class="ml-3 font-weight-bold" id="secondary-color-text">*contributors only</span>{% endif %}</p>
+          <h4 class="bg-light rounded pt-1 pb-2 px-2"><span class="badge mr-3" id="GET">{{ trial_methods.get_trial.method }}</span><span id="code-font">{{ trial_methods.get_trial.endpoint }}</span></h4>
+
+          <!-- Request Parameters: Table or None -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Request Parameters</h5>
+          {% if trial_methods.get_trial.path_parameters is eq([]) and trial_methods.get_trial.request_parameters is eq([]) %}
+            <span class="pl-1">None</span>
+          {% else %}
+          <table class="table table-sm" id="request-parameter-table">
+            <thead>
+              <tr class="d-flex">
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-2">Type</th>
+                <th scope="col" class="col-2">Required</th>
+                <th scope="col" class="col-2">In</th>
+                <th scope="col" class="col-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for parameter in trial_methods.get_trial.path_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+              {% for parameter in trial_methods.get_trial.request_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+          
+          <!-- Response Examples -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Response Examples</h5>
+          <div class="bg-light border-top border-left border-right rounded-top py-2 px-2 font-weight-bold">Status: <span id="success-status">{{ trial_methods.get_trial.status_code }}</span></div>
+          <div class="bg-white border-top border-left border-right border-bottom rounded-bottom pt-2 pb-0 px-2 mb-3 text-dark" id="response-body-font">
+            <pre id="response-body-font">
+            <code id="response-body-font">
+              {
+                "id": 5679095853613056,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/trials/5679095853613056",
+                "name": "GENERATION HD1",
+                "phase": "Phase 3",
+                "status": "Active, not recruiting",
+                "condition": {
+                    "id": 5668756323827712,
+                    "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5668756323827712"
+                },
+                "study_type": "Interventional",
+                "intervention_type": "Drug",
+                "intervention_name": "RG6042",
+                "companies": [
+                    "Hoffmann-La Roche"
+                ],
+                "summary": "This study will evaluate the efficacy, safety, and biomarker effects of RO7234292 (RG6042) compared with placebo in patients with manifest Huntington's disease (HD).",
+                "website": ""
+            }
+            </code>
+            </pre>                       
+          </div>
+
+        </div>
+
+        <!-- Method: -->
+        <!-- POST /trial -->
+        <div class="tab-pane fade" id="post-trial" role="tabpanel" aria-labelledby="post-trial-tab">
+          <h3 id="primary-color-text">{{ trial_methods.post_trial.title }}</h3>
+          <p>{{ trial_methods.post_trial.description }}{% if trial_methods.post_trial.contributor_only is true %}<span class="ml-3 font-weight-bold" id="secondary-color-text">*contributors only</span>{% endif %}</p>
+          <h4 class="bg-light rounded pt-1 pb-2 px-2"><span class="badge mr-3" id="POST">{{ trial_methods.post_trial.method }}</span><span id="code-font">{{ trial_methods.post_trial.endpoint }}</span></h4>
+
+          <!-- Request Parameters: Table or None -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Request Parameters</h5>
+          {% if trial_methods.post_trial.path_parameters is eq([]) and trial_methods.post_trial.request_parameters is eq([]) %}
+            <span class="pl-1">None</span>
+          {% else %}
+          <table class="table table-sm" id="request-parameter-table">
+            <thead>
+              <tr class="d-flex">
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-2">Type</th>
+                <th scope="col" class="col-2">Required</th>
+                <th scope="col" class="col-2">In</th>
+                <th scope="col" class="col-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for parameter in trial_methods.post_trial.path_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+              {% for parameter in trial_methods.post_trial.request_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+          
+          <!-- Response Examples -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Response Examples</h5>
+          <div class="bg-light border-top border-left border-right rounded-top py-2 px-2 font-weight-bold">Status: <span id="success-status">{{ trial_methods.post_trial.status_code }}</span></div>
+          <div class="bg-white border-top border-left border-right border-bottom rounded-bottom pt-2 pb-0 px-2 mb-3 text-dark" id="response-body-font">
+            <pre id="response-body-font">
+            <code id="response-body-font">
+              {
+                "id": 6203775702269952,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/trials/6203775702269952",
+                "name": "PROOF",
+                "phase": "Phase 2",
+                "status": "Active, not recruiting",
+                "condition": {
+                    "id": 5668756323827712,
+                    "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5668756323827712"
+                },
+                "study_type": "Interventional",
+                "intervention_type": "Drug",
+                "intervention_name": "pridopidine",
+                "companies": [
+                    "Prilenia"
+                ],
+                "summary": "This study will evaluate the efficacy and safety of pridopidine 45mg twice daily (BID) in patients with early stage manifest Huntington Disease (HD).",
+                "website": ""
+              }
+            </code>
+            </pre>                       
+          </div>
+
+        </div>
+      
+        <!-- Method: -->
+        <!-- PATCH /trials/{trial_id} -->
+        <div class="tab-pane fade" id="patch-trial" role="tabpanel" aria-labelledby="patch-trial-tab">
+          <h3 id="primary-color-text">{{ trial_methods.patch_trial.title }}</h3>
+          <p>{{ trial_methods.patch_trial.description }}{% if trial_methods.patch_trial.contributor_only is true %}<span class="ml-3 font-weight-bold" id="secondary-color-text">*contributors only</span>{% endif %}</p>
+          <h4 class="bg-light rounded pt-1 pb-2 px-2"><span class="badge mr-3" id="PATCH">{{ trial_methods.patch_trial.method }}</span><span id="code-font">{{ trial_methods.patch_trial.endpoint }}</span></h4>
+
+          <!-- Request Parameters: Table or None -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Request Parameters</h5>
+          {% if trial_methods.patch_trial.path_parameters is eq([]) and trial_methods.patch_trial.request_parameters is eq([]) %}
+            <span class="pl-1">None</span>
+          {% else %}
+          <table class="table table-sm" id="request-parameter-table">
+            <thead>
+              <tr class="d-flex">
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-2">Type</th>
+                <th scope="col" class="col-2">Required</th>
+                <th scope="col" class="col-2">In</th>
+                <th scope="col" class="col-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for parameter in trial_methods.patch_trial.path_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+              {% for parameter in trial_methods.patch_trial.request_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+          
+          <!-- Response Examples -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Response Examples</h5>
+          <div class="bg-light border-top border-left border-right rounded-top py-2 px-2 font-weight-bold">Status: <span id="success-status">{{ trial_methods.patch_trial.status_code }}</span></div>
+          <div class="bg-white border-top border-left border-right border-bottom rounded-bottom pt-2 pb-0 px-2 mb-3 text-dark" id="response-body-font">
+            <pre id="response-body-font">
+            <code id="response-body-font">
+              {
+                "id": 6203775702269952,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/trials/6203775702269952",
+                "name": "PROOF",
+                "phase": "Phase 2",
+                "status": "Active, not recruiting",
+                "condition": {
+                    "id": 5668756323827712,
+                    "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5668756323827712"
+                },
+                "study_type": "Interventional",
+                "intervention_type": "Drug",
+                "intervention_name": "pridopidine",
+                "companies": [
+                    "Prilenia"
+                ],
+                "summary": "This study will evaluate the efficacy and safety of pridopidine 45mg twice daily (BID) in patients with early stage manifest Huntington Disease (HD).",
+                "website": ""
+            }
+            </code>
+            </pre>                       
+          </div>
+        </div>
+
+        <!-- Method: -->
+        <!-- DELETE /trials/{trial_id} -->
+        <div class="tab-pane fade" id="delete-trial" role="tabpanel" aria-labelledby="delete-trial-tab">
+          <h3 id="primary-color-text">{{ trial_methods.delete_trial.title }}</h3>
+          <p>{{ trial_methods.delete_trial.description }}{% if trial_methods.delete_trial.contributor_only is true %}<span class="ml-3 font-weight-bold" id="secondary-color-text">*contributors only</span>{% endif %}</p>
+          <h4 class="bg-light rounded pt-1 pb-2 px-2"><span class="badge mr-3" id="DELETE">{{ trial_methods.delete_trial.method }}</span><span id="code-font">{{ trial_methods.delete_trial.endpoint }}</span></h4>
+
+          <!-- Request Parameters: Table or None -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Request Parameters</h5>
+          {% if trial_methods.delete_trial.path_parameters is eq([]) and trial_methods.delete_trial.request_parameters is eq([]) %}
+            <span class="pl-1">None</span>
+          {% else %}
+          <table class="table table-sm" id="request-parameter-table">
+            <thead>
+              <tr class="d-flex">
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-2">Type</th>
+                <th scope="col" class="col-2">Required</th>
+                <th scope="col" class="col-2">In</th>
+                <th scope="col" class="col-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for parameter in trial_methods.delete_trial.path_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+              {% for parameter in trial_methods.delete_trial.request_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+          
+          <!-- Response Examples -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Response Examples</h5>
+          <div class="bg-light border-top border-left border-right rounded-top py-2 px-2 font-weight-bold">Status: <span id="success-status">{{ trial_methods.delete_trial.status_code }}</span></div>
+          <div class="bg-white border-top border-left border-right border-bottom rounded-bottom pt-2 pb-0 px-2 mb-3 text-dark" id="response-body-font">
+            <pre id="response-body-font">
+            <code id="response-body-font">
+            </code>
+            </pre>                       
+          </div>
+        </div>
+
+        <!-- CONDITIONS -->
+        
+        <!-- Method: -->
+        <!-- GET /conditions-->
+        <div class="tab-pane fade" id="get-conditions" role="tabpanel" aria-labelledby="get-conditions-tab">
+          <h3 id="primary-color-text">{{ condition_methods.get_conditions.title }}</h3>
+          <p>{{ condition_methods.get_conditions.description }}{% if condition_methods.get_conditions.contributor_only is true %}<span class="ml-3 font-weight-bold" id="secondary-color-text">*contributors only</span>{% endif %}</p>
+          <h4 class="bg-light rounded pt-1 pb-2 px-2"><span class="badge mr-3" id="GET">{{ condition_methods.get_conditions.method }}</span><span id="code-font">{{ condition_methods.get_conditions.endpoint }}</span></h4>
+
+          <!-- Request Parameters: Table or None -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Request Parameters</h5>
+          {% if condition_methods.get_conditions.path_parameters is eq([]) and condition_methods.get_conditions.request_parameters is eq([]) %}
+            <span class="pl-1">None</span>
+          {% else %}
+          <table class="table table-sm" id="request-parameter-table">
+            <thead>
+              <tr class="d-flex">
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-2">Type</th>
+                <th scope="col" class="col-2">Required</th>
+                <th scope="col" class="col-2">In</th>
+                <th scope="col" class="col-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for parameter in condition_methods.get_conditions.path_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+              {% for parameter in condition_methods.get_conditions.request_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+          
+          <!-- Response Examples -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Response Examples</h5>
+          <div class="bg-light border-top border-left border-right rounded-top py-2 px-2 font-weight-bold">Status: <span id="success-status">{{ condition_methods.get_conditions.status_code }}</span></div>
+          <div class="bg-white border-top border-left border-right border-bottom rounded-bottom pt-2 pb-0 px-2 mb-3 text-dark" id="response-body-font">
+            <pre id="response-body-font">
+            <code id="response-body-font">
+              {
+                "id": 5158257651875840,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5158257651875840",
+                "name": "Huntington's Disease",
+                "description": "A rare, inherited disease that causes the progressive degeneration of nerve cells in the brain.",
+                "types": [
+                    "Adult-Onset Huntington's Disease",
+                    "Juvenile Huntington's Disease"
+                ],
+                "clinical_trials": []
+              },
+              {
+                  "id": 4796400818716672,
+                  "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/4796400818716672",
+                  "name": "Multiple Sclerosis",
+                  "description": "A disease in which the immune system eats away at the protective covering of nerves.",
+                  "types": [
+                      "Clinically Isolated Syndrome (CIS)",
+                      "Relapsing-Remitting MS (RRMS)",
+                      "Primary Progressive MS (PPMS)",
+                      "Secondary Progressive MS (SPMS)"        
+                  ],
+                  "clinical_trials": []
+              },
+              {
+                  "id": 5634601401712640,
+                  "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5634601401712640",
+                  "name": "Amyotrophic Lateral Sclerosis",
+                  "description": "A progressive nervous system disease that affects nerve cells in the brain and spinal cord, causing loss of muscle control.",
+                  "types": [
+                      "Sporadic ALS",
+                      "Familial ALS (FALS)"                
+                  ],
+                  "clinical_trials": []
+              }
+            </code>
+            </pre>                       
+          </div>
+        
+        </div>
+
+        <!-- Method: -->
+        <!-- GET /conditions/{condition_id} -->
+        <div class="tab-pane fade" id="get-condition" role="tabpanel" aria-labelledby="get-condition-tab">
+          <h3 id="primary-color-text">{{ condition_methods.get_condition.title }}</h3>
+          <p>{{ condition_methods.get_condition.description }}{% if condition_methods.get_condition.contributor_only is true %}<span class="ml-3 font-weight-bold" id="secondary-color-text">*contributors only</span>{% endif %}</p>
+          <h4 class="bg-light rounded pt-1 pb-2 px-2"><span class="badge mr-3" id="GET">{{ condition_methods.get_condition.method }}</span><span id="code-font">{{ condition_methods.get_condition.endpoint }}</span></h4>
+
+          <!-- Request Parameters: Table or None -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Request Parameters</h5>
+          {% if condition_methods.get_condition.path_parameters is eq([]) and condition_methods.get_condition.request_parameters is eq([]) %}
+            <span class="pl-1">None</span>
+          {% else %}
+          <table class="table table-sm" id="request-parameter-table">
+            <thead>
+              <tr class="d-flex">
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-2">Type</th>
+                <th scope="col" class="col-2">Required</th>
+                <th scope="col" class="col-2">In</th>
+                <th scope="col" class="col-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for parameter in condition_methods.get_condition.path_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+              {% for parameter in condition_methods.get_condition.request_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}
+
+            <!-- Response Examples -->
+            <h5 class="text-dark font-weight-bold pl-1 pt-3">Response Examples</h5>
+            <div class="bg-light border-top border-left border-right rounded-top py-2 px-2 font-weight-bold">Status: <span id="success-status">{{ condition_methods.get_condition.status_code }}</span></div>
+            <div class="bg-white border-top border-left border-right border-bottom rounded-bottom pt-2 pb-0 px-2 mb-3 text-dark" id="response-body-font">
+              <pre id="response-body-font">
+              <code id="response-body-font">
+                {
+                  "id": 5158257651875840,
+                  "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5158257651875840",
+                  "name": "Huntington's Disease",
+                  "description": "A rare, inherited disease that causes the progressive degeneration of nerve cells in the brain.",
+                  "types": [
+                      "Adult-Onset Huntington's Disease",
+                      "Juvenile Huntington's Disease"
+                  ],
+                  "clinical_trials": []
+                }
+              </code>
+              </pre>                       
+            </div>
+
+        </div>
+
+        <!-- Method: -->
+        <!-- GET /conditions/{condition_id}/trials -->
+        <div class="tab-pane fade" id="get-condition-trials" role="tabpanel" aria-labelledby="get-condition-trials-tab">...</div>
+
+        <!-- Method: -->
+        <!-- POST /conditions -->
+        <div class="tab-pane fade" id="post-condition" role="tabpanel" aria-labelledby="post-condition-tab">
+          <h3 id="primary-color-text">{{ condition_methods.post_condition.title }}</h3>
+          <p>{{ condition_methods.post_condition.description }}{% if condition_methods.post_condition.contributor_only is true %}<span class="ml-3 font-weight-bold" id="secondary-color-text">*contributors only</span>{% endif %}</p>
+          <h4 class="bg-light rounded pt-1 pb-2 px-2"><span class="badge mr-3" id="POST">{{ condition_methods.post_condition.method }}</span><span id="code-font">{{ condition_methods.post_condition.endpoint }}</span></h4>
+
+          <!-- Request Parameters: Table or None -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Request Parameters</h5>
+          {% if condition_methods.post_condition.path_parameters is eq([]) and condition_methods.post_condition.request_parameters is eq([]) %}
+            <span class="pl-1">None</span>
+          {% else %}
+          <table class="table table-sm" id="request-parameter-table">
+            <thead>
+              <tr class="d-flex">
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-2">Type</th>
+                <th scope="col" class="col-2">Required</th>
+                <th scope="col" class="col-2">In</th>
+                <th scope="col" class="col-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for parameter in condition_methods.post_condition.path_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+              {% for parameter in condition_methods.post_condition.request_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}     
+
+            <!-- Response Examples -->
+            <h5 class="text-dark font-weight-bold pl-1 pt-3">Response Examples</h5>
+            <div class="bg-light border-top border-left border-right rounded-top py-2 px-2 font-weight-bold">Status: <span id="success-status">{{ condition_methods.post_condition.status_code }}</span></div>
+            <div class="bg-white border-top border-left border-right border-bottom rounded-bottom pt-2 pb-0 px-2 mb-3 text-dark" id="response-body-font">
+              <pre id="response-body-font">
+              <code id="response-body-font">
+                {
+                  "id": 4796400818716672,
+                  "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/4796400818716672",
+                  "name": "Multiple Sclerosis",
+                  "description": "A disease in which the immune system eats away at the protective covering of nerves.",
+                  "types": [
+                      "Clinically Isolated Syndrome (CIS)",
+                      "Relapsing-Remitting MS (RRMS)",
+                      "Primary Progressive MS (PPMS)",
+                      "Secondary Progressive MS (SPMS)"        
+                  ],
+                  "clinical_trials": []
+                }
+              </code>
+              </pre>                       
+            </div>
+        
+        </div>
+
+        <!-- Method: -->
+        <!-- PATCH /conditions/{condition_id} -->
+        <div class="tab-pane fade" id="patch-condition" role="tabpanel" aria-labelledby="patch-condition">
+          <h3 id="primary-color-text">{{ condition_methods.patch_condition.title }}</h3>
+          <p>{{ condition_methods.patch_condition.description }}{% if condition_methods.patch_condition.contributor_only is true %}<span class="ml-3 font-weight-bold" id="secondary-color-text">*contributors only</span>{% endif %}</p>
+          <h4 class="bg-light rounded pt-1 pb-2 px-2"><span class="badge mr-3" id="PATCH">{{ condition_methods.patch_condition.method }}</span><span id="code-font">{{ condition_methods.patch_condition.endpoint }}</span></h4>
+
+          <!-- Request Parameters: Table or None -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Request Parameters</h5>
+          {% if condition_methods.patch_condition.path_parameters is eq([]) and condition_methods.patch_condition.request_parameters is eq([]) %}
+            <span class="pl-1">None</span>
+          {% else %}
+          <table class="table table-sm" id="request-parameter-table">
+            <thead>
+              <tr class="d-flex">
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-2">Type</th>
+                <th scope="col" class="col-2">Required</th>
+                <th scope="col" class="col-2">In</th>
+                <th scope="col" class="col-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for parameter in condition_methods.patch_condition.path_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+              {% for parameter in condition_methods.patch_condition.request_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}     
+
+            <!-- Response Examples -->
+            <h5 class="text-dark font-weight-bold pl-1 pt-3">Response Examples</h5>
+            <div class="bg-light border-top border-left border-right rounded-top py-2 px-2 font-weight-bold">Status: <span id="success-status">{{ condition_methods.patch_condition.status_code }}</span></div>
+            <div class="bg-white border-top border-left border-right border-bottom rounded-bottom pt-2 pb-0 px-2 mb-3 text-dark" id="response-body-font">
+              <pre id="response-body-font">
+              <code id="response-body-font">
+                {
+                  "id": 5634601401712640,
+                  "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5634601401712640",
+                  "name": "Amyotrophic Lateral Sclerosis",
+                  "description": "A progressive nervous system disease that affects nerve cells in the brain and spinal cord, causing loss of muscle control.",
+                  "types": [
+                      "Sporadic ALS",
+                      "Familial ALS (FALS)"                
+                  ],
+                  "clinical_trials": []
+                }
+              </code>
+              </pre>                       
+            </div>
+        </div>
+
+        <!-- Method: -->
+        <!-- DELETE /conditions/{condition_id} -->
+        <div class="tab-pane fade" id="delete-condition" role="tabpanel" aria-labelledby="delete-condition-tab">
+          <h3 id="primary-color-text">{{ condition_methods.delete_condition.title }}</h3>
+          <p>{{ condition_methods.delete_condition.description }}{% if condition_methods.delete_condition.contributor_only is true %}<span class="ml-3 font-weight-bold" id="secondary-color-text">*contributors only</span>{% endif %}</p>
+          <h4 class="bg-light rounded pt-1 pb-2 px-2"><span class="badge mr-3" id="DELETE">{{ condition_methods.delete_condition.method }}</span><span id="code-font">{{ condition_methods.delete_condition.endpoint }}</span></h4>
+
+          <!-- Request Parameters: Table or None -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Request Parameters</h5>
+          {% if condition_methods.delete_condition.path_parameters is eq([]) and condition_methods.delete_condition.request_parameters is eq([]) %}
+            <span class="pl-1">None</span>
+          {% else %}
+          <table class="table table-sm" id="request-parameter-table">
+            <thead>
+              <tr class="d-flex">
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-2">Type</th>
+                <th scope="col" class="col-2">Required</th>
+                <th scope="col" class="col-2">In</th>
+                <th scope="col" class="col-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for parameter in condition_methods.delete_condition.path_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+              {% for parameter in condition_methods.delete_condition.request_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}     
+
+            <!-- Response Examples -->
+            <h5 class="text-dark font-weight-bold pl-1 pt-3">Response Examples</h5>
+            <div class="bg-light border-top border-left border-right rounded-top py-2 px-2 font-weight-bold">Status: <span id="success-status">{{ condition_methods.delete_condition.status_code }}</span></div>
+            <div class="bg-white border-top border-left border-right border-bottom rounded-bottom pt-2 pb-0 px-2 mb-3 text-dark" id="response-body-font">
+              <pre id="response-body-font">
+              <code id="response-body-font">
+              </code>
+              </pre>                       
+            </div>
+        </div>
+
+        <!-- Method: -->
+        <!-- PUT /conditions/{condition_id}/trials/{trial_id} -->
+        <div class="tab-pane fade" id="put-condition-trial" role="tabpanel" aria-labelledby="put-condition-trial-tab">
+          <h3 id="primary-color-text">{{ condition_methods.put_condition_trial.title }}</h3>
+          <p>{{ condition_methods.put_condition_trial.description }}{% if condition_methods.put_condition_trial.contributor_only is true %}<span class="ml-3 font-weight-bold" id="secondary-color-text">*contributors only</span>{% endif %}</p>
+          <h4 class="bg-light rounded pt-1 pb-2 px-2"><span class="badge mr-3" id="PUT">{{ condition_methods.put_condition_trial.method }}</span><span id="code-font">{{ condition_methods.put_condition_trial.endpoint }}</span></h4>
+
+          <!-- Request Parameters: Table or None -->
+          <h5 class="text-dark font-weight-bold pl-1 pt-3">Request Parameters</h5>
+          {% if condition_methods.put_condition_trial.path_parameters is eq([]) and condition_methods.put_condition_trial.request_parameters is eq([]) %}
+            <span class="pl-1">None</span>
+          {% else %}
+          <table class="table table-sm" id="request-parameter-table">
+            <thead>
+              <tr class="d-flex">
+                <th scope="col" class="col-2">Name</th>
+                <th scope="col" class="col-2">Type</th>
+                <th scope="col" class="col-2">Required</th>
+                <th scope="col" class="col-2">In</th>
+                <th scope="col" class="col-4">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for parameter in condition_methods.put_condition_trial.path_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+              {% for parameter in condition_methods.put_condition_trial.request_parameters %}
+              <tr class="d-flex">
+                <td class="col-2">{{ parameter.name }}</td>
+                <td class="col-2">{{ parameter.type }}</td>
+                <td class="col-2">{{ parameter.required }}</td>
+                <td class="col-2">{{ parameter.in }}</td>
+                <td class="col-4">{{ parameter.description }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% endif %}     
+
+            <!-- Response Examples -->
+            <h5 class="text-dark font-weight-bold pl-1 pt-3">Response Examples</h5>
+            <div class="bg-light border-top border-left border-right rounded-top py-2 px-2 font-weight-bold">Status: <span id="success-status">{{ condition_methods.put_condition_trial.status_code }}</span></div>
+            <div class="bg-white border-top border-left border-right border-bottom rounded-bottom pt-2 pb-0 px-2 mb-3 text-dark" id="response-body-font">
+              <pre id="response-body-font">
+              <code id="response-body-font">
+                {
+                  "id": 5679095853613056,
+                  "self": "https://clinical-trials-link.wn.r.appspot.com/trials/5679095853613056",
+                  "name": "GENERATION HD1",
+                  "phase": "Phase 3",
+                  "status": "Active, not recruiting",
+                  "condition": {
+                      "id": 5668756323827712,
+                      "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5668756323827712"
+                  },
+                  "study_type": "Interventional",
+                  "intervention_type": "Drug",
+                  "intervention_name": "RG6042",
+                  "companies": [
+                      "Hoffmann-La Roche"
+                  ],
+                  "summary": "",
+                  "website": ""
+              }
+              </code>
+              </pre>                       
+            </div>
+        </div>
+      
+      </div>
+    
+    </div>
+    <div class="col-2"></div>
+
+  </div>
+
+{% endblock content %}

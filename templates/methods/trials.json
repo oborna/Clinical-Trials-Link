@@ -1,0 +1,376 @@
+{
+    "get_trials": {
+        "title": "Get all clinical trials",
+        "description": "Get all clinical trials currently in the API database.",
+        "method": "GET",
+        "endpoint": "/trials",
+        "contributor_only": false,
+        "path_parameters": [],
+        "request_parameters": [],
+        "request_example": [],
+        "status_code": "200 OK",
+        "response_example": [
+            {
+                "id": 5679095853613056,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/trials/5679095853613056",
+                "name": "GENERATION HD1",
+                "phase": "Phase 3",
+                "status": "Active, not recruiting",
+                "condition": {
+                    "id": 5668756323827712,
+                    "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5668756323827712"
+                },
+                "study_type": "Interventional",
+                "intervention_type": "Drug",
+                "intervention_name": "RG6042",
+                "companies": [
+                    "Hoffmann-La Roche"
+                ],
+                "summary": "This study will evaluate the efficacy, safety, and biomarker effects of RO7234292 (RG6042) compared with placebo in patients with manifest Huntington's disease (HD).",
+                "website": ""
+            },
+            {
+                "id": 6203775702269952,
+                "self": "http://clinical-trials-link.wn.r.appspot.com/trials/6203775702269952",
+                "name": "PROOF",
+                "phase": "Phase 2",
+                "status": "Active, not recruiting",
+                "condition": {
+                    "id": 5668756323827712,
+                    "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5668756323827712"
+                },
+                "study_type": "Interventional",
+                "intervention_type": "Drug",
+                "intervention_name": "pridopidine",
+                "companies": [
+                    "Prilenia"
+                ],
+                "summary": "This study will evaluate the efficacy and safety of pridopidine 45mg twice daily (BID) in patients with early stage manifest Huntington Disease (HD).",
+                "website": ""
+            }
+        ]        
+    },
+    "get_trial": {
+        "title": "Get a clinical trial",
+        "description": "Get a clinical trial by its trial ID.",
+        "method": "GET",
+        "endpoint": "/trials/{trial_id}",
+        "contributor_only": false,
+        "path_parameters": [
+            {
+                "name": "trial_id",
+                "type": "string",
+                "required": "yes",
+                "in": "path",
+                "description": "The trial's ID."
+            }
+        ],
+        "request_parameters": [],
+        "request_example": [],
+        "status_code": "200 OK",
+        "response_example": [
+            {
+                "id": 5679095853613056,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/trials/5679095853613056",
+                "name": "GENERATION HD1",
+                "phase": "Phase 3",
+                "status": "Active, not recruiting",
+                "condition": {
+                    "id": 5668756323827712,
+                    "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5668756323827712"
+                },
+                "study_type": "Interventional",
+                "intervention_type": "Drug",
+                "intervention_name": "RG6042",
+                "companies": [
+                    "Hoffmann-La Roche"
+                ],
+                "summary": "This study will evaluate the efficacy, safety, and biomarker effects of RO7234292 (RG6042) compared with placebo in patients with manifest Huntington's disease (HD).",
+                "website": ""
+            }
+        ]
+    },
+    "post_trial": {
+        "title": "Create a clinical trial",
+        "description": "Create a new clinical trial.",
+        "method": "POST",
+        "endpoint": "/trials",
+        "contributor_only": true,
+        "path_parameters": [],
+        "request_parameters": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The clinical trial's name."
+            },
+            {
+                "name": "title",
+                "type": "string",
+                "required": "yes",
+                "in": "body",
+                "description": "The clinical trial's official title on clinicaltrials.gov. Must be unique."
+            },
+            {
+                "name": "nct_number",
+                "type": "string",
+                "required": "yes",
+                "in": "body",
+                "description": "The clinical trial's National Clinical Trial (NCT) Number on clinicaltrials.gov. Include the 'NCT' prefix. Must be unique."
+            },
+            {
+                "name": "ct_gov_url",
+                "type": "string",
+                "required": "yes",
+                "in": "body",
+                "description": ""
+            },
+            {
+                "name": "phase",
+                "type": "string",
+                "required": "yes",
+                "in": "body",
+                "description": "The clinical trial's phase. Must be one of the following: 'Phase 1,' 'Phase 2', 'Phase 3', 'Phase 4', 'Not Applicable', or 'Other'."
+            },
+            {
+                "name": "status",
+                "type": "string",
+                "required": "yes",
+                "in": "body",
+                "description": "The clinical trial's current status. Must be one of the following: 'Recruiting', 'Not yet recruiting', 'Active, not recruiting', 'Completed', 'Terminated', 'Suspended', 'Withdrawn', or 'Other'."
+            },
+            {
+                "name": "condition",
+                "type": "string",
+                "required": "yes",
+                "in": "body",
+                "description": "The condition that the clinical trial addresses. Must be a condition that is currently in the API's database."
+            },
+            {
+                "name": "study_type",
+                "type": "string",
+                "required": "yes",
+                "in": "body",
+                "description": "The clinical trial's study type (i.e., interventional, observational). Must be one of the following: 'Interventional', 'Observational', or 'Other'."
+            },
+            {
+                "name": "intervention_name",
+                "type": "string",
+                "required": "yes",
+                "in": "body",
+                "description": "The name of the intervention being tested."
+            },
+            {
+                "name": "intervention_type",
+                "type": "string",
+                "required": "yes",
+                "in": "body",
+                "description": "The type of intervention being tested (i.e., drug, diagnostic test). Must be one of the following: 'Drug', 'Biological', 'Behavioral', 'Procedure', 'Device', 'Dietary Supplement', or 'Other'."
+            },
+            {
+                "name": "sponsors",
+                "type": "list of strings",
+                "required": "yes",
+                "in": "body",
+                "description": "Any company or organization running the clinical trial."
+            },
+            {
+                "name": "summary",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "A brief summary of the clinical trial."
+            },
+            {
+                "name": "website",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The clinical trial's independent website."
+            }  
+        ],
+        "request_example": [
+            {
+                "name": "PROOF",
+                "phase": "Phase 2",
+                "status": "Active, not recruiting",
+                "condition": "Huntington's Disease",
+                "study_type": "Interventional",
+                "intervention_type": "Drug",
+                "intervention_name": "pridopidine",
+                "companies": [
+                    "Prilenia"
+                ],
+                "summary": "This study will evaluate the efficacy and safety of pridopidine 45mg twice daily (BID) in patients with early stage manifest Huntington Disease (HD).",
+                "website": ""
+            }
+        ],
+        "status_code": "201 Created",
+        "response_example": [
+            {
+                "id": 6203775702269952,
+                "self": "http://clinical-trials-link.wn.r.appspot.com/trials/6203775702269952",
+                "name": "PROOF",
+                "phase": "Phase 2",
+                "status": "Active, not recruiting",
+                "condition": {
+                    "id": 5668756323827712,
+                    "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5668756323827712"
+                },
+                "study_type": "Interventional",
+                "intervention_type": "Drug",
+                "intervention_name": "pridopidine",
+                "companies": [
+                    "Prilenia"
+                ],
+                "summary": "This study will evaluate the efficacy and safety of pridopidine 45mg twice daily (BID) in patients with early stage manifest Huntington Disease (HD).",
+                "website": ""
+            }
+        ]
+    },
+    "patch_trial": {
+        "title": "Edit a clinical trial",
+        "description": "Edit a clinical trial.",
+        "method": "PATCH",
+        "endpoint": "/trials/{trial_id}",
+        "contributor_only": true,
+        "path_parameters": [
+            {
+                "name": "trial_id",
+                "type": "string",
+                "required": "yes",
+                "in": "path",
+                "description": "The trial's ID."
+            }
+        ],
+        "request_parameters": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The clinical trial's name."
+            },
+            {
+                "name": "title",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The clinical trial's official title on clinicaltrials.gov. Must be unique."
+            },
+            {
+                "name": "nct_number",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The clinical trial's National Clinical Trial (NCT) Number on clinicaltrials.gov. Include the 'NCT' prefix. Must be unique."
+            },
+            {
+                "name": "ct_gov_url",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": ""
+            },
+            {
+                "name": "phase",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The clinical trial's phase. Must be one of the following: 'Phase 1,' 'Phase 2', 'Phase 3', 'Phase 4', 'Not Applicable', or 'Other'."
+            },
+            {
+                "name": "status",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The clinical trial's current status. Must be one of the following: 'Recruiting', 'Not yet recruiting', 'Active, not recruiting', 'Completed', 'Terminated', 'Suspended', 'Withdrawn', or 'Other'."
+            },
+            {
+                "name": "condition",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The condition that the clinical trial addresses. Must be a condition that is currently in the API's database."
+            },
+            {
+                "name": "study_type",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The clinical trial's study type (i.e., interventional, observational). Must be one of the following: 'Interventional', 'Observational', or 'Other'."
+            },
+            {
+                "name": "intervention_name",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The name of the intervention being tested."
+            },
+            {
+                "name": "intervention_type",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The type of intervention being tested (i.e., drug, diagnostic test). Must be one of the following: 'Drug', 'Biological', 'Behavioral', 'Procedure', 'Device', 'Dietary Supplement', or 'Other'."
+            },
+            {
+                "name": "sponsors",
+                "type": "list of strings",
+                "required": "no",
+                "in": "body",
+                "description": "Any company or organization running the clinical trial."
+            },
+            {
+                "name": "summary",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "A brief summary of the clinical trial."
+            },
+            {
+                "name": "website",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The clinical trial's independent website."
+            }  
+        ],
+        "request_example": [],
+        "status_code": "200 OK",
+        "response_example": [
+            {
+                "id": 5634601401712640,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5634601401712640",
+                "name": "Amyotrophic Lateral Sclerosis",
+                "description": "A progressive nervous system disease that affects nerve cells in the brain and spinal cord, causing loss of muscle control.",
+                "types": [
+                    "Sporadic ALS",
+                    "Familial ALS (FALS)"                
+                ],
+                "clinical_trials": []
+            }
+        ]
+    },
+    "delete_trial": {
+        "title": "Delete a clinical trial",
+        "description": "Delete a clinical trial.",
+        "method": "DELETE",
+        "endpoint": "/trials/{trial_id}",
+        "contributor_only": true,
+        "path_parameters": [
+            {
+                "name": "trial_id",
+                "type": "string",
+                "required": "yes",
+                "in": "path",
+                "description": "The trial's ID."
+            }
+        ],
+        "request_parameters": [],
+        "request_example": [],
+        "status_code": "204 OK",
+        "response_example": []
+    }
+}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center pb-4">
+    <div class="col-4"></div>
+    <div class="col-4 text-center py-3">
+
+        <button type="button" class="btn btn-primary btn-lg my-3" id="primary-color-button" data-toggle="collapse" data-target="#about">About</button><br />
+        <div id="about" class="collapse">
+            <div class="bg-light border rounded py-4 px-4">
+                <p>Clinical Trials Link is a simple and fast REST API for accessing the latest information on clinical trials.</p>
+                <p>To begin using this API, please create or find your account by selecting the "Get Started" button below.</p>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-lg my-3" id="primary-color-button" data-toggle="collapse" data-target="#create-account">Get Started</button><br />
+        <div id="create-account" class="collapse">
+            <div class="bg-light border rounded py-4 px-4"> 
+                <p>To get started, you'll need to create a user account to get an access token. You can sign up using the "Sign In With Google" method below.</p>
+                <p>Already create a user account? Sign in with Google to get your user information, including an access token.</p>     
+                <a href="/auth/oauth2" class="btn" id="secondary-color-button" role="button">Sign In With Google</a>
+            </div>
+        </div>
+
+        <a class="btn btn-primary btn-lg my-3" href="/documentation" id="primary-color-button" role="button">Documentation</a>
+        <!--
+        <button type="button" class="btn btn-primary btn-lg my-3" id="primary-color-button" data-toggle="collapse" data-target="#documentation">Documentation</button><br />
+        <div id="documentation" class="collapse">
+            <div class="bg-light border rounded py-4 px-4">
+                <a class="btn" id="secondary-color-button" role="button" href="/developer_docs">Developers</a>
+                <a class="btn" id="secondary-color-button" role="button" href="/contributor_docs">Contributors</a>
+            </div>
+        </div>
+        -->
+
+    </div>
+    <div class="col-4"></div>
+</div>
+
+{% endblock content %}

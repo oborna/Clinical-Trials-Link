@@ -1,0 +1,257 @@
+{
+    "get_conditions": {
+        "title": "Get all conditions",
+        "description": "Get all conditions currently in the API database.",
+        "method": "GET",
+        "endpoint": "/conditions",
+        "contributor_only": false,
+        "path_parameters": [],
+        "request_parameters": [],
+        "request_example": [],
+        "status_code": "200 OK",
+        "response_example": [
+            {
+                "id": 5158257651875840,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5158257651875840",
+                "name": "Huntington's Disease",
+                "description": "A rare, inherited disease that causes the progressive degeneration of nerve cells in the brain.",
+                "types": [
+                    "Adult-Onset Huntington's Disease",
+                    "Juvenile Huntington's Disease"
+                ],
+                "clinical_trials": []
+            },
+            {
+                "id": 4796400818716672,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/4796400818716672",
+                "name": "Multiple Sclerosis",
+                "description": "A disease in which the immune system eats away at the protective covering of nerves.",
+                "types": [
+                    "Clinically Isolated Syndrome (CIS)",
+                    "Relapsing-Remitting MS (RRMS)",
+                    "Primary Progressive MS (PPMS)",
+                    "Secondary Progressive MS (SPMS)"        
+                ],
+                "clinical_trials": []
+            },
+            {
+                "id": 5634601401712640,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5634601401712640",
+                "name": "Amyotrophic Lateral Sclerosis",
+                "description": "A progressive nervous system disease that affects nerve cells in the brain and spinal cord, causing loss of muscle control.",
+                "types": [
+                    "Sporadic ALS",
+                    "Familial ALS (FALS)"                
+                ],
+                "clinical_trials": []
+            }
+        ]        
+    },
+    "get_condition": {
+        "title": "Get a condition",
+        "description": "Get a condition by its condition ID.",
+        "method": "GET",
+        "endpoint": "/conditions/{condition_id}",
+        "contributor_only": false,
+        "path_parameters": [
+            {
+                "name": "condition_id",
+                "type": "string",
+                "required": "yes",
+                "in": "path",
+                "description": "The condition's ID."
+            }
+        ],
+        "request_parameters": [],
+        "request_example": [],
+        "status_code": "200 OK",
+        "response_example": [
+            {
+                "id": 5158257651875840,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5158257651875840",
+                "name": "Huntington's Disease",
+                "description": "A rare, inherited disease that causes the progressive degeneration of nerve cells in the brain.",
+                "types": [
+                    "Adult-Onset Huntington's Disease",
+                    "Juvenile Huntington's Disease"
+                ],
+                "clinical_trials": []
+            }
+        ]
+    },
+    "post_condition": {
+        "title": "Create a condition",
+        "description": "Create a new condition.",
+        "method": "POST",
+        "endpoint": "/conditions",
+        "contributor_only": true,
+        "path_parameters": [],
+        "request_parameters": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": "yes",
+                "in": "body",
+                "description": "The condition's name. Must be unique."
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "A brief description of the condition."
+            },
+            {
+                "name": "types",
+                "type": "list of strings",
+                "required": "no",
+                "in": "body",
+                "description": "Any condition types associated with the condition."
+            }    
+        ],
+        "request_example": [
+            {
+                "name": "Multiple Sclerosis",
+                "description": "A disease in which the immune system eats away at the protective covering of nerves.",
+                "types": ["Clinically Isolated Syndrome (CIS)", "Relapsing-Remitting MS (RRMS)", "Primary Progressive MS (PPMS)", "Secondary Progressive MS (SPMS)"]
+            }
+        ],
+        "status_code": "201 Created",
+        "response_example": [
+            {
+                "id": 4796400818716672,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/4796400818716672",
+                "name": "Multiple Sclerosis",
+                "description": "A disease in which the immune system eats away at the protective covering of nerves.",
+                "types": [
+                    "Clinically Isolated Syndrome (CIS)",
+                    "Relapsing-Remitting MS (RRMS)",
+                    "Primary Progressive MS (PPMS)",
+                    "Secondary Progressive MS (SPMS)"        
+                ],
+                "clinical_trials": []
+            }
+        ]
+    },
+    "patch_condition": {
+        "title": "Edit a condition",
+        "description": "Edit a condition.",
+        "method": "PATCH",
+        "endpoint": "/conditions/{condition_id}",
+        "contributor_only": true,
+        "path_parameters": [
+            {
+                "name": "condition_id",
+                "type": "string",
+                "required": "yes",
+                "in": "path",
+                "description": "The condition's ID."
+            }
+        ],
+        "request_parameters": [
+            {
+                "name": "name",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "The condition's name. Must be unique."
+            },
+            {
+                "name": "description",
+                "type": "string",
+                "required": "no",
+                "in": "body",
+                "description": "A brief description of the condition."
+            },
+            {
+                "name": "types",
+                "type": "list of strings",
+                "required": "no",
+                "in": "body",
+                "description": "Any condition types associated with the condition."
+            }
+        ],
+        "request_example": [],
+        "status_code": "200 OK",
+        "response_example": [
+            {
+                "id": 5634601401712640,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5634601401712640",
+                "name": "Amyotrophic Lateral Sclerosis",
+                "description": "A progressive nervous system disease that affects nerve cells in the brain and spinal cord, causing loss of muscle control.",
+                "types": [
+                    "Sporadic ALS",
+                    "Familial ALS (FALS)"                
+                ],
+                "clinical_trials": []
+            }
+        ]
+    },
+    "delete_condition": {
+        "title": "Delete a condition",
+        "description": "Delete a condition.",
+        "method": "DELETE",
+        "endpoint": "/conditions/{condition_id}",
+        "contributor_only": true,
+        "path_parameters": [
+            {
+                "name": "condition_id",
+                "type": "string",
+                "required": "yes",
+                "in": "path",
+                "description": "The condition's ID."
+            }
+        ],
+        "request_parameters": [],
+        "request_example": [],
+        "status_code": "204 OK",
+        "response_example": []
+    },
+    "put_condition_trial": {
+        "title": "Edit the condition associated with a clinical trial",
+        "description": "Edit the condition associated with a clinical trial.",
+        "method": "PUT",
+        "endpoint": "/conditions/{condition_id}/trials/{trial_id}",
+        "contributor_only": true,
+        "path_parameters": [
+            {
+                "name": "condition_id",
+                "type": "string",
+                "required": "yes",
+                "in": "path",
+                "description": "The condition's ID."
+            },
+            {
+                "name": "trial_id",
+                "type": "string",
+                "required": "yes",
+                "in": "path",
+                "description": "The trial's ID."
+            }
+        ],
+        "request_parameters": [],
+        "request_example": [],
+        "status_code": "200 OK",
+        "response_example": [
+            {
+                "id": 5679095853613056,
+                "self": "https://clinical-trials-link.wn.r.appspot.com/trials/5679095853613056",
+                "name": "GENERATION HD1",
+                "phase": "Phase 3",
+                "status": "Active, not recruiting",
+                "condition": {
+                    "id": 5668756323827712,
+                    "self": "https://clinical-trials-link.wn.r.appspot.com/conditions/5668756323827712"
+                },
+                "study_type": "Interventional",
+                "intervention_type": "Drug",
+                "intervention_name": "RG6042",
+                "companies": [
+                    "Hoffmann-La Roche"
+                ],
+                "summary": "",
+                "website": ""
+            }
+        ]
+    }
+}
